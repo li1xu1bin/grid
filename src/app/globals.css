@@ -1,84 +1,319 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 231 29% 32%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 291 48% 63%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 291 48% 63%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-  .dark {
-    --background: 210 10% 15%;
-    --foreground: 210 40% 98%;
-    --card: 210 9% 20%;
-    --card-foreground: 210 40% 98%;
-    --popover: 210 10% 15%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 231 29% 32%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 10% 25%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 210 10% 25%;
-    --muted-foreground: 210 40% 60%;
-    --accent: 291 48% 63%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 210 10% 25%;
-    --input: 210 10% 25%;
-    --ring: 291 48% 63%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
+/* src/app/globals.css */
+:root {
+  --bg-dark: #0f1225;
+  --card-bg: rgba(20, 24, 45, 0.85);
+  --text-gold: #dcbfa2;
+  --text-white: #ffffff;
+  --tag-purple: #6a4c9c;
+  --name-bg: rgba(30, 30, 30, 0.9);
+  --modal-bg: #1e2235;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: linear-gradient(135deg, #050815 0%, #151835 100%);
+  color: var(--text-white);
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  padding-bottom: 80px; /* Space for FAB */
+}
+
+/* 列表卡片 */
+.team-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, rgba(20,24,40,0.6) 0%, rgba(30,35,60,0.4) 100%);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.team-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.team-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+
+.team-score {
+  font-size: 22px;
+  color: var(--text-gold);
+  font-family: 'Times New Roman', serif;
+  font-weight: bold;
+}
+
+.hero-group {
+  display: flex;
+  gap: 12px;
+}
+
+.hero-avatar-container {
+  position: relative;
+  width: 60px;
+  height: 60px;
+}
+
+.hero-ring {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid #bba378;
+  overflow: hidden;
+  background: #333;
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.chain-tag {
+  position: absolute;
+  top: -2px;
+  right: -8px;
+  background-color: var(--tag-purple);
+  color: white;
+  font-size: 10px;
+  padding: 1px 4px;
+  border-radius: 2px;
+  transform: scale(0.9);
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.name-tag {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--name-bg);
+  color: #ddd;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+/* 按钮 */
+.fab-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--text-gold);
+  color: #000;
+  border: none;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(220, 191, 162, 0.4);
+  cursor: pointer;
+  z-index: 100;
+  transition: transform 0.2s;
+}
+
+.fab-btn:active {
+  transform: scale(0.95);
+}
+
+/* 弹窗遮罩 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.modal {
+  background: var(--modal-bg);
+  width: 90%;
+  max-width: 400px;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.modal h3 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: var(--text-gold);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #aaa;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 6px;
+  color: white;
+  font-size: 16px;
+}
+
+.char-selector-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.char-slot {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border: 1px dashed rgba(255,255,255,0.3);
+  border-radius: 8px;
+  padding: 10px 5px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.char-slot.filled {
+  border: 1px solid var(--text-gold);
+  background: rgba(0,0,0,0.2);
+}
+
+.slot-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #555;
+  margin-bottom: 5px;
+  object-fit: cover;
+}
+
+.placeholder-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+  font-size: 20px;
+}
+
+.chain-select {
+  margin-top: 5px;
+  width: 100%;
+  background: #333;
+  color: white;
+  border: none;
+  padding: 2px;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  background: #333;
+  color: #fff;
+}
+
+.btn-confirm {
+  background: var(--text-gold);
+  color: #000;
+  font-weight: bold;
+}
+
+/* 角色列表覆盖层 */
+.char-list-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--modal-bg);
+  border-radius: 12px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.char-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  overflow-y: auto;
+  flex: 1;
+  padding-top: 10px;
+}
+
+.char-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.char-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+}
+
+.char-item span {
+  font-size: 12px;
+  margin-top: 4px;
+  text-align: center;
+  color: #ddd;
+}
+
+.char-item:hover img {
+  border-color: var(--text-gold);
 }
