@@ -42,7 +42,7 @@ const CHINESE_NUM = ["", "一", "二", "三", "四", "五", "六", "七", "八",
 // 1. 卡片组件
 function TeamCard({ team, onDelete }: { team: Team; onDelete: (id: number) => void; }) {
   return (
-    <div className="team-card">
+    <div className="team-card" style={{position: 'relative'}}>
       <div className="team-info">
         <div className="team-name">{team.name}</div>
         <div className="team-score">{team.score}</div>
@@ -59,14 +59,14 @@ function TeamCard({ team, onDelete }: { team: Team; onDelete: (id: number) => vo
             </div>
           ))}
         </div>
-        <button 
+      </div>
+      <button 
           onClick={() => onDelete(team.id)} 
-          className="ml-4 p-2 text-red-500 hover:text-red-700"
+          className="absolute top-2 right-2 p-1.5 text-gray-400 hover:text-red-500 rounded-full hover:bg-white/10 transition-colors"
           aria-label={`删除队伍 ${team.name}`}
         >
-          <Trash2 size={20} />
+          <Trash2 size={16} />
         </button>
-      </div>
     </div>
   );
 }
@@ -260,5 +260,3 @@ export default function Home() {
     </main>
   );
 }
-
-    
