@@ -42,12 +42,12 @@ const CHINESE_NUM = ["", "一", "二", "三", "四", "五", "六", "七", "八",
 // 1. 卡片组件
 function TeamCard({ team, onDelete }: { team: Team; onDelete: (id: number) => void; }) {
   return (
-    <div className="team-card" style={{position: 'relative'}}>
-      <div className="team-info">
-        <div className="team-name">{team.name}</div>
-        <div className="team-score">{team.score}</div>
-      </div>
-      <div className="flex items-center">
+    <div className="flex items-center w-full">
+      <div className="team-card flex-grow">
+        <div className="team-info">
+          <div className="team-name">{team.name}</div>
+          <div className="team-score">{team.score}</div>
+        </div>
         <div className="hero-group">
           {team.members.map((member, idx) => (
             <div key={idx} className="hero-avatar-container">
@@ -62,11 +62,11 @@ function TeamCard({ team, onDelete }: { team: Team; onDelete: (id: number) => vo
       </div>
       <button 
           onClick={() => onDelete(team.id)} 
-          className="absolute top-2 right-2 p-1.5 text-gray-400 hover:text-red-500 rounded-full hover:bg-white/10 transition-colors"
+          className="ml-4 p-2 text-gray-400 hover:text-red-500 rounded-full hover:bg-white/10 transition-colors flex-shrink-0"
           aria-label={`删除队伍 ${team.name}`}
         >
-          <Trash2 size={16} />
-        </button>
+          <Trash2 size={20} />
+      </button>
     </div>
   );
 }
@@ -160,7 +160,7 @@ export default function Home() {
         <h2>深境之塔 / 队伍记录</h2>
       </div>
 
-      <div id="team-list">
+      <div id="team-list" className="space-y-4">
         {teams.map((team) => (
           <TeamCard key={team.id} team={team} onDelete={handleDeleteTeam} />
         ))}
