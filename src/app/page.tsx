@@ -40,33 +40,24 @@ const CHINESE_NUM = ["", "一", "二", "三", "四", "五", "六", "七", "八",
 // --- Components ---
 
 // 1. 卡片组件
-function TeamCard({ team, onDelete }: { team: Team; onDelete: (id: number) => void; }) {
+function TeamCard({ team }: { team: Team; }) {
   return (
-    <div className="flex items-center w-full">
-      <div className="team-card flex-grow">
-        <div className="team-info">
-          <div className="team-name">{team.name}</div>
-          <div className="team-score">{team.score}</div>
-        </div>
-        <div className="hero-group">
-          {team.members.map((member, idx) => (
-            <div key={idx} className="hero-avatar-container">
-              <div className="hero-ring">
-                <img src={member.img} className="hero-img" alt={member.name} />
-              </div>
-              <div className="chain-tag">{CHAIN_MAP[member.chain]}</div>
-              <div className="name-tag">{member.name}</div>
-            </div>
-          ))}
-        </div>
+    <div className="team-card flex-grow">
+      <div className="team-info">
+        <div className="team-name">{team.name}</div>
+        <div className="team-score">{team.score}</div>
       </div>
-      <button 
-          onClick={() => onDelete(team.id)} 
-          className="ml-4 p-2 text-gray-400 hover:text-red-500 rounded-full hover:bg-white/10 transition-colors flex-shrink-0"
-          aria-label={`删除队伍 ${team.name}`}
-        >
-          <Trash2 size={20} />
-      </button>
+      <div className="hero-group">
+        {team.members.map((member, idx) => (
+          <div key={idx} className="hero-avatar-container">
+            <div className="hero-ring">
+              <img src={member.img} className="hero-img" alt={member.name} />
+            </div>
+            <div className="chain-tag">{CHAIN_MAP[member.chain]}</div>
+            <div className="name-tag">{member.name}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -162,7 +153,16 @@ export default function Home() {
 
       <div id="team-list" className="space-y-4">
         {teams.map((team) => (
-          <TeamCard key={team.id} team={team} onDelete={handleDeleteTeam} />
+          <div key={team.id} className="flex items-center w-full gap-4">
+            <TeamCard team={team} />
+            <button 
+              onClick={() => handleDeleteTeam(team.id)} 
+              className="p-2 text-gray-400 hover:text-red-500 rounded-full hover:bg-white/10 transition-colors flex-shrink-0"
+              aria-label={`删除队伍 ${team.name}`}
+            >
+              <Trash2 size={20} />
+            </button>
+          </div>
         ))}
       </div>
 
