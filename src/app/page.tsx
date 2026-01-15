@@ -19,14 +19,14 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-background">
       <header className="p-4 border-b shadow-md">
         <h1 className="text-2xl font-bold text-center text-primary-foreground font-headline">
-          Team Builder
+          配队构建器
         </h1>
       </header>
       <main className="flex-grow p-4 md:p-8 flex flex-col">
         {teams.length === 0 ? (
           <div className="flex flex-col items-center justify-center flex-grow text-center text-muted-foreground">
-            <p className="text-lg mb-2">No teams created yet.</p>
-            <p>Click the button below to add your first team!</p>
+            <p className="text-lg mb-2">尚未创建任何队伍。</p>
+            <p>点击下方按钮添加你的第一个队伍！</p>
           </div>
         ) : (
           <ScrollArea className="w-full whitespace-nowrap">
@@ -46,7 +46,7 @@ export default function Home() {
             className="w-16 h-16 rounded-full shadow-lg bg-accent hover:bg-accent/90 text-accent-foreground"
           >
             <PlusCircle className="w-8 h-8" />
-            <span className="sr-only">Add Team</span>
+            <span className="sr-only">添加队伍</span>
           </Button>
         </AddTeamModal>
       </div>

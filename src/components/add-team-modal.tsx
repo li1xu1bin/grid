@@ -38,7 +38,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
-  score: z.coerce.number().min(0, "Score must be a non-negative number."),
+  score: z.coerce.number().min(0, "分数必须为非负数。"),
   chains: z.record(z.string(), z.coerce.number().min(0).max(6)).default({}),
 });
 
@@ -78,8 +78,8 @@ export function AddTeamModal({ children, onAddTeam }: AddTeamModalProps) {
         return [...prev, character];
       }
       toast({
-        title: "Selection Limit Reached",
-        description: "You can only select up to 3 characters.",
+        title: "已达到选择上限",
+        description: "最多只能选择3个角色。",
         variant: "destructive",
       });
       return prev;
@@ -89,8 +89,8 @@ export function AddTeamModal({ children, onAddTeam }: AddTeamModalProps) {
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (selectedCharacters.length !== 3) {
       toast({
-        title: "Invalid Selection",
-        description: "Please select exactly 3 characters.",
+        title: "选择无效",
+        description: "请选择3个角色。",
         variant: "destructive",
       });
       return;
@@ -114,15 +114,30 @@ export function AddTeamModal({ children, onAddTeam }: AddTeamModalProps) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[600px] bg-card">
         <DialogHeader>
-          <DialogTitle>Create New Team</DialogTitle>
+          <DialogTitle>添加新记录</DialogTitle>
           <DialogDescription>
-            Select 3 characters, set their chain values, and enter a team score.
+            选择3个角色，设置他们的链数，并输入队伍分数。
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="score"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>深塔分数</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="例如：2220" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <div className="space-y-4">
-              <h3 className="text-lg font-medium">Selected Characters ({selectedCharacters.length}/3)</h3>
+              <h3 className="text-lg font-medium">已选角色 ({selectedCharacters.length}/3)</h3>
+              <p className="text-sm text-muted-foreground">选择角色配置 (点击头像更换)</p>
               {selectedCharacters.length > 0 ? (
                 <div className="grid grid-cols-3 gap-4">
                   {selectedCharacters.map((char) => (
@@ -145,13 +160,13 @@ export function AddTeamModal({ children, onAddTeam }: AddTeamModalProps) {
                           <Select onValueChange={field.onChange} defaultValue={String(field.value)}>
                             <FormControl>
                               <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Chain" />
+                                <SelectValue placeholder="链" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
                               {[0, 1, 2, 3, 4, 5, 6].map((i) => (
                                 <SelectItem key={i} value={String(i)}>
-                                  Chain {i}
+                                  {i}链
                                 </SelectItem>
                               ))}
                             </SelectContent>
@@ -162,12 +177,12 @@ export function AddTeamModal({ children, onAddTeam }: AddTeamModalProps) {
                   ))}
                 </div>
               ) : (
-                 <p className="text-sm text-muted-foreground">Select characters from the list below.</p>
+                 <p className="text-sm text-muted-foreground">从下面的列表中选择角色。</p>
               )}
             </div>
 
             <div className="space-y-2">
-               <h3 className="text-lg font-medium">Available Characters</h3>
+               <h3 className="text-lg font-medium">可用角色</h3>
                 <ScrollArea className="h-48">
                   <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2 p-2">
                       {characters.map((char) => {
@@ -199,26 +214,12 @@ export function AddTeamModal({ children, onAddTeam }: AddTeamModalProps) {
                   </div>
                 </ScrollArea>
             </div>
-
-            <FormField
-              control={form.control}
-              name="score"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Team Score</FormLabel>
-                  <FormControl>
-                    <Input type="number" placeholder="Enter score" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             
             <DialogFooter>
               <Button type="button" variant="secondary" onClick={() => handleOpenChange(false)}>
-                Cancel
+                取消
               </Button>
-              <Button type="submit" className="bg-accent hover:bg-accent/90 text-accent-foreground">Create Team</Button>
+              <Button type="submit" className="bg-accent hover:bg-accent/90 text-accent-foreground">保存</Button>
             </DialogFooter>
           </form>
         </Form>

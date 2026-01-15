@@ -9,7 +9,7 @@ export function TeamCard({ team }: { team: Team }) {
       <Card className="w-[380px] bg-card border-primary/50">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-bold text-accent">
-            Score: {team.score}
+            分数: {team.score}
           </CardTitle>
         </CardHeader>
         <CardContent className="flex justify-around items-start p-4">
