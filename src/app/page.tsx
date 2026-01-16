@@ -24,14 +24,52 @@ type Team = {
 
 // --- Mock Data ---
 const CHARACTERS: Character[] = [
-  { id: 1, name: "弗洛洛", img: "https://api.dicebear.com/9.x/avataaars/svg?seed=Felix" },
-  { id: 2, name: "仇远", img: "https://api.dicebear.com/9.x/avataaars/svg?seed=Aneka" },
-  { id: 3, name: "维里奈", img: "https://api.dicebear.com/9.x/avataaars/svg?seed=Willow" },
-  { id: 4, name: "忌炎", img: "https://api.dicebear.com/9.x/avataaars/svg?seed=Jiyan" },
-  { id: 5, name: "吟霖", img: "https://api.dicebear.com/9.x/avataaars/svg?seed=Yinlin" },
-  { id: 6, name: "安可", img: "https://api.dicebear.com/9.x/avataaars/svg?seed=Anke" },
-  { id: 7, name: "卡卡罗", img: "https://api.dicebear.com/9.x/avataaars/svg?seed=Kakalo" },
-  { id: 8, name: "鉴心", img: "https://api.dicebear.com/9.x/avataaars/svg?seed=Jianxin" },
+
+  { id: 1, name: "忌炎", img: "./avatar/T_IconRoleHead256_11_UI.webp" },
+  { id: 1, name: "吟霖", img: "./avatar/T_IconRoleHead256_17_UI.webp" },
+  { id: 1, name: "今汐", img: "./avatar/T_IconRoleHead256_24_UI.webp" },
+  { id: 1, name: "长离", img: "./avatar/T_IconRoleHead256_26_UI.webp" },
+  { id: 1, name: "折枝", img: "./avatar/T_IconRoleHead256_27_UI.webp" },
+  { id: 1, name: "相里要", img: "./avatar/T_IconRoleHead256_25_UI.webp" },
+  { id: 1, name: "守岸人", img: "./avatar/T_IconRoleHead256_28_UI.webp" },
+  { id: 1, name: "椿", img: "./avatar/T_IconRoleHead256_29_UI.webp" },
+  { id: 1, name: "珂莱塔", img: "./avatar/T_IconRoleHead256_32_UI.webp" },
+  { id: 1, name: "洛可可", img: "./avatar/T_IconRoleHead256_33_UI.webp" },
+  { id: 1, name: "菲比", img: "./avatar/T_IconRoleHead256_45_UI.webp" },
+  { id: 2, name: "布兰特", img: "./avatar/T_IconRoleHead256_44_UI.webp" },
+  { id: 3, name: "坎特蕾拉", img: "./avatar/T_IconRoleHead256_34_UI.webp" },
+  { id: 4, name: "赞妮", img: "./avatar/T_IconRoleHead256_38_UI.webp" },
+  { id: 5, name: "夏空", img: "./avatar/T_IconRoleHead256_37_UI.webp" },
+  { id: 6, name: "卡提希娅", img: "./avatar/T_IconRoleHead256_40_UI.webp" },
+  { id: 7, name: "露帕", img: "./avatar/T_IconRoleHead256_46_UI.webp" },
+  { id: 8, name: "弗洛洛", img: "./avatar/T_IconRoleHead256_41_UI.webp" },
+  { id: 8, name: "奥古斯塔", img: "./avatar/T_IconRoleHead256_51_UI.webp" },
+  { id: 8, name: "尤诺", img: "./avatar/T_IconRoleHead256_48_UI.webp" },
+  { id: 8, name: "嘉贝莉娜", img: "./avatar/T_IconRoleHead256_55_UI.webp" },
+  { id: 8, name: "仇远", img: "./avatar/T_IconRoleHead256_56_UI.webp" },
+  { id: 8, name: "千咲", img: "./avatar/T_IconRoleHead256_57_UI.webp" },
+  { id: 8, name: "琳奈", img: "./avatar/T_IconRoleHead256_60_UI.webp" },
+  { id: 8, name: "莫宁", img: "./avatar/T_IconRoleHead256_61_UI.webp" },
+  { id: 8, name: "漂泊者", img: "./avatar/T_IconRoleHead256_4_UI.webp" },
+  { id: 8, name: "漂泊者", img: "./avatar/T_IconRoleHead256_5_UI.webp" },
+  { id: 8, name: "桃祈", img: "./avatar/T_IconRoleHead256_9_UI.webp" },
+  { id: 8, name: "渊武", img: "./avatar/T_IconRoleHead256_15_UI.webp" },
+  { id: 8, name: "莫特斐", img: "./avatar/T_IconRoleHead256_13_UI.webp" },
+  { id: 8, name: "丹瑾", img: "./avatar/T_IconRoleHead256_10_UI.webp" },
+  { id: 8, name: "秋水", img: "./avatar/T_IconRoleHead256_12_UI.webp" },
+  { id: 8, name: "散华", img: "./avatar/T_IconRoleHead256_7_UI.webp" },
+  { id: 8, name: "炽霞", img: "./avatar/T_IconRoleHead256_2_UI.webp" },
+  { id: 8, name: "白芷", img: "./avatar/T_IconRoleHead256_6_UI.webp" },
+  { id: 8, name: "釉瑚", img: "./avatar/T_IconRoleHead256_31_UI.webp" },
+  { id: 8, name: "秧秧", img: "./avatar/T_IconRoleHead256_1_UI.webp" },
+  { id: 8, name: "灯灯", img: "./avatar/T_IconRoleHead256_30_UI.webp" },
+  { id: 8, name: "卜灵", img: "./avatar/T_IconRoleHead256_58_UI.webp" },
+  { id: 8, name: "鉴心", img: "./avatar/T_IconRoleHead256_23_UI.webp" },
+  { id: 8, name: "卡卡罗", img: "./avatar/T_IconRoleHead256_18_UI.webp" },
+  { id: 8, name: "凌阳", img: "./avatar/T_IconRoleHead256_14_UI.webp" },
+  { id: 8, name: "维里奈", img: "./avatar/T_IconRoleHead256_3_UI.webp" },
+  { id: 8, name: "安可", img: "./avatar/T_IconRoleHead256_8_UI.webp" },
+
 ];
 
 const CHAIN_MAP = ["零链", "一链", "二链", "三链", "四链", "五链", "六链"];
@@ -81,7 +119,7 @@ export default function Home() {
   // 状态：弹窗控制
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCharListOpen, setIsCharListOpen] = useState(false);
-  
+
   // 状态：正在编辑的新队伍数据
   const [score, setScore] = useState("");
   const [selectedMembers, setSelectedMembers] = useState<(TeamMember | null)[]>([null, null, null]);
@@ -129,7 +167,7 @@ export default function Home() {
   // 选中角色
   const handleSelectChar = (char: Character) => {
     if (currentSlotIndex === null) return;
-    
+
     const newMembers = [...selectedMembers];
     newMembers[currentSlotIndex] = { ...char, chain: 0 }; // 默认0链
     setSelectedMembers(newMembers);
@@ -148,20 +186,20 @@ export default function Home() {
   return (
     <main style={{ padding: "20px" }}>
       <div style={{ marginBottom: "20px" }}>
-        <h2>深境之塔 / 队伍记录</h2>
+        <h2>矩阵叠兵</h2>
       </div>
 
       <div id="team-list" className="space-y-4">
         {teams.map((team) => (
           <div key={team.id} className="flex items-center w-full gap-4">
             <TeamCard team={team} />
-            <button 
-              onClick={() => handleDeleteTeam(team.id)} 
+            {/* <button
+              onClick={() => handleDeleteTeam(team.id)}
               className="p-2 text-gray-400 hover:text-red-500 rounded-full hover:bg-white/10 transition-colors flex-shrink-0"
               aria-label={`删除队伍 ${team.name}`}
             >
               <Trash2 size={20} />
-            </button>
+            </button> */}
           </div>
         ))}
       </div>
@@ -174,7 +212,7 @@ export default function Home() {
       {/* 弹窗遮罩 */}
       {isModalOpen && (
         <div className="modal-overlay" id="addModal" onClick={(e) => e.target === e.currentTarget && setIsModalOpen(false)}>
-          <div className="modal" style={{position: 'relative', overflow: 'hidden'}}>
+          <div className="modal" style={{ position: 'relative', overflow: 'hidden' }}>
             <h3>添加新记录</h3>
             <div className="form-group">
               <label className="form-label">深塔分数</label>
@@ -215,9 +253,9 @@ export default function Home() {
                     </>
                   ) : (
                     <>
-                      <div className="placeholder-img slot-avatar" style={{width: 40, height: 40, borderRadius: '50%', background: '#555'}}>+</div>
+                      <div className="placeholder-img slot-avatar" style={{ width: 40, height: 40, borderRadius: '50%', background: '#555' }}>+</div>
                       <span className="slot-name" style={{ fontSize: "12px" }}>选择</span>
-                       <select className="chain-select" id={`chain-${index}`} onClick={(e) => e.stopPropagation()} style={{display:'none'}}>
+                      <select className="chain-select" id={`chain-${index}`} onClick={(e) => e.stopPropagation()} style={{ display: 'none' }}>
                         {[0, 1, 2, 3, 4, 5, 6].map((n) => (
                           <option key={n} value={n}>{n}链</option>
                         ))}
@@ -245,13 +283,6 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-                <button
-                  className="btn btn-cancel"
-                  style={{ marginTop: "10px", padding: "8px" }}
-                  onClick={() => setIsCharListOpen(false)}
-                >
-                  返回
-                </button>
               </div>
             )}
           </div>
