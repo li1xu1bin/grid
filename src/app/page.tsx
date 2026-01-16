@@ -185,7 +185,7 @@ export default function Home() {
 
   return (
     <main style={{ padding: "20px" }}>
-      <div style={{ marginBottom: "20px" }}>
+      <div style={{ marginBottom: "20px", textAlign: "center" }}>
         <h2>矩阵叠兵</h2>
       </div>
 
@@ -193,13 +193,6 @@ export default function Home() {
         {teams.map((team) => (
           <div key={team.id} className="flex items-center w-full gap-4">
             <TeamCard team={team} />
-            {/* <button
-              onClick={() => handleDeleteTeam(team.id)}
-              className="p-2 text-gray-400 hover:text-red-500 rounded-full hover:bg-white/10 transition-colors flex-shrink-0"
-              aria-label={`删除队伍 ${team.name}`}
-            >
-              <Trash2 size={20} />
-            </button> */}
           </div>
         ))}
       </div>
@@ -210,84 +203,86 @@ export default function Home() {
       </button>
 
       {/* 弹窗遮罩 */}
-      {isModalOpen && (
-        <div className="modal-overlay" id="addModal" onClick={(e) => e.target === e.currentTarget && setIsModalOpen(false)}>
-          <div className="modal" style={{ position: 'relative', overflow: 'hidden' }}>
-            <h3>添加新记录</h3>
-            <div className="form-group">
-              <label className="form-label">深塔分数</label>
-              <input
-                type="number"
-                className="form-input"
-                id="scoreInput"
-                placeholder="例如：2220"
-                value={score}
-                onChange={(e) => setScore(e.target.value)}
-              />
-            </div>
-
-            <label className="form-label">选择角色配置 (点击头像更换)</label>
-            <div className="char-selector-row">
-              {selectedMembers.map((member, index) => (
-                <div
-                  key={index}
-                  id={`slot-${index}`}
-                  className={`char-slot ${member ? "filled" : ""}`}
-                  onClick={() => handleSlotClick(index)}
-                >
-                  {member ? (
-                    <>
-                      <img src={member.img} className="slot-avatar" alt={member.name} />
-                      <span className="slot-name" style={{ fontSize: "12px" }}>{member.name}</span>
-                      <select
-                        className="chain-select"
-                        id={`chain-${index}`}
-                        value={member.chain}
-                        onClick={(e) => e.stopPropagation()} // 防止触发 slot click
-                        onChange={(e) => handleChainChange(index, Number(e.target.value))}
-                      >
-                        {[0, 1, 2, 3, 4, 5, 6].map((n) => (
-                          <option key={n} value={n}>{n}链</option>
-                        ))}
-                      </select>
-                    </>
-                  ) : (
-                    <>
-                      <div className="placeholder-img slot-avatar" style={{ width: 40, height: 40, borderRadius: '50%', background: '#555' }}>+</div>
-                      <span className="slot-name" style={{ fontSize: "12px" }}>选择</span>
-                      <select className="chain-select" id={`chain-${index}`} onClick={(e) => e.stopPropagation()} style={{ display: 'none' }}>
-                        {[0, 1, 2, 3, 4, 5, 6].map((n) => (
-                          <option key={n} value={n}>{n}链</option>
-                        ))}
-                      </select>
-                    </>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            <div className="modal-actions">
-              <button className="btn btn-cancel" onClick={() => setIsModalOpen(false)}>取消</button>
-              <button className="btn btn-confirm" onClick={handleSave}>保存</button>
-            </div>
-
-            {/* 内部弹层：角色列表 */}
-            {isCharListOpen && (
-              <div className="char-list-overlay" id="charListOverlay">
-                <h4 style={{ textAlign: "center", marginBottom: "10px", color: "#fff" }}>选择角色</h4>
-                <div className="char-grid" id="charGrid">
-                  {CHARACTERS.map((char) => (
-                    <div key={char.id} className="char-item" onClick={() => handleSelectChar(char)}>
-                      <img src={char.img} alt={char.name} />
-                      <span>{char.name}</span>
-                    </div>
-                  ))}
-                </div>
+      {
+        isModalOpen && (
+          <div className="modal-overlay" id="addModal" onClick={(e) => e.target === e.currentTarget && setIsModalOpen(false)}>
+            <div className="modal" style={{ position: 'relative', overflow: 'hidden' }}>
+              <h3>添加新记录</h3>
+              <div className="form-group">
+                <label className="form-label">深塔分数</label>
+                <input
+                  type="number"
+                  className="form-input"
+                  id="scoreInput"
+                  placeholder="例如：2220"
+                  value={score}
+                  onChange={(e) => setScore(e.target.value)}
+                />
               </div>
-            )}
+
+              <label className="form-label">选择角色配置 (点击头像更换)</label>
+              <div className="char-selector-row">
+                {selectedMembers.map((member, index) => (
+                  <div
+                    key={index}
+                    id={`slot-${index}`}
+                    className={`char-slot ${member ? "filled" : ""}`}
+                    onClick={() => handleSlotClick(index)}
+                  >
+                    {member ? (
+                      <>
+                        <img src={member.img} className="slot-avatar" alt={member.name} />
+                        <span className="slot-name" style={{ fontSize: "12px" }}>{member.name}</span>
+                        <select
+                          className="chain-select"
+                          id={`chain-${index}`}
+                          value={member.chain}
+                          onClick={(e) => e.stopPropagation()} // 防止触发 slot click
+                          onChange={(e) => handleChainChange(index, Number(e.target.value))}
+                        >
+                          {[0, 1, 2, 3, 4, 5, 6].map((n) => (
+                            <option key={n} value={n}>{n}链</option>
+                          ))}
+                        </select>
+                      </>
+                    ) : (
+                      <>
+                        <div className="placeholder-img slot-avatar" style={{ width: 40, height: 40, borderRadius: '50%', background: '#555' }}>+</div>
+                        <span className="slot-name" style={{ fontSize: "12px" }}>选择</span>
+                        <select className="chain-select" id={`chain-${index}`} onClick={(e) => e.stopPropagation()} style={{ display: 'none' }}>
+                          {[0, 1, 2, 3, 4, 5, 6].map((n) => (
+                            <option key={n} value={n}>{n}链</option>
+                          ))}
+                        </select>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              <div className="modal-actions">
+                <button className="btn btn-cancel" onClick={() => setIsModalOpen(false)}>取消</button>
+                <button className="btn btn-confirm" onClick={handleSave}>保存</button>
+              </div>
+
+              {/* 内部弹层：角色列表 */}
+              {isCharListOpen && (
+                <div className="char-list-overlay" id="charListOverlay">
+                  <h4 style={{ textAlign: "center", marginBottom: "10px", color: "#fff" }}>选择角色</h4>
+                  <div className="char-grid" id="charGrid">
+                    {CHARACTERS.map((char) => (
+                      <div key={char.id} className="char-item" onClick={() => handleSelectChar(char)}>
+                        <img src={char.img} alt={char.name} />
+                        <span>{char.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      )}
-    </main>
+        )
+      }
+    </main >
   );
 }
