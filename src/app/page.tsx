@@ -1,7 +1,7 @@
 /* src/app/page.tsx */
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Trash2 } from "lucide-react";
 
 // --- Types ---
@@ -78,24 +78,82 @@ const CHINESE_NUM = ["", "一", "二", "三", "四", "五", "六", "七", "八",
 // --- Components ---
 
 // 1. 卡片组件
-function TeamCard({ team }: { team: Team; }) {
+function TeamCard({ team, onDelete }: { team: Team; onDelete: (id: number) => void; }) {
+  const [isSliding, setIsSliding] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [currentX, setCurrentX] = useState(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    const moveX = e.touches[0].clientX - startX;
+    if (moveX < 0) {
+      setCurrentX(Math.max(moveX, -80));
+      setIsSliding(false);
+    } else if (moveX > 0) {
+      // 向右移动时恢复
+      setCurrentX(0);
+      setIsSliding(false);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (currentX < -40) {
+      setIsSliding(true);
+      setCurrentX(-80);
+    } else {
+      setCurrentX(0);
+      setIsSliding(false);
+    }
+  };
+
+  const handleDelete = () => {
+    onDelete(team.id);
+  };
+
+  // 计算删除按钮的透明度：根据滑动距离
+  const deleteOpacity = Math.abs(currentX) / 80;
+
   return (
-    <div className="team-card flex-grow">
-      <div className="team-info">
-        <div className="team-name">{team.name}</div>
-        <div className="team-score">{team.score}</div>
-      </div>
-      <div className="hero-group">
-        {team.members.map((member, idx) => (
-          <div key={idx} className="hero-avatar-container">
-            <div className="hero-ring">
-              <img src={member.img} className="hero-img" alt={member.name} />
+    <div className="team-item-wrapper">
+      <div
+        className="team-card flex-grow"
+        style={{
+          transform: `translateX(${currentX}px)`,
+          transition: isSliding ? 'none' : 'transform 0.3s ease-out',
+        }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="team-info">
+          <div className="team-name">{team.name}</div>
+          <div className="team-score">{team.score}</div>
+        </div>
+        <div className="hero-group">
+          {team.members.map((member, idx) => (
+            <div key={idx} className="hero-avatar-container">
+              <div className="hero-ring">
+                <img src={member.img} className="hero-img" alt={member.name} />
+              </div>
+              <div className="chain-tag">{CHAIN_MAP[member.chain]}</div>
+              <div className="name-tag">{member.name}</div>
             </div>
-            <div className="chain-tag">{CHAIN_MAP[member.chain]}</div>
-            <div className="name-tag">{member.name}</div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
+      <button
+        className="delete-btn"
+        style={{
+          opacity: deleteOpacity,
+          pointerEvents: deleteOpacity > 0.5 ? 'auto' : 'none',
+        }}
+        onClick={handleDelete}
+      >
+        删除
+      </button>
     </div>
   );
 }
@@ -103,18 +161,27 @@ function TeamCard({ team }: { team: Team; }) {
 // 2. 主页面
 export default function Home() {
   // 状态：队伍列表
-  const [teams, setTeams] = useState<Team[]>([
-    {
-      id: 1,
-      name: "队伍一",
-      score: "2220",
-      members: [
-        { ...CHARACTERS[0], chain: 2 },
-        { ...CHARACTERS[1], chain: 0 },
-        { ...CHARACTERS[2], chain: 3 },
-      ],
-    },
-  ]);
+  const [teams, setTeams] = useState<Team[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // 初始化：从localStorage加载数据
+  useEffect(() => {
+    const savedTeams = localStorage.getItem("teams");
+    if (savedTeams) {
+      try {
+        setTeams(JSON.parse(savedTeams));
+      } catch (e) {
+        console.error("Failed to parse teams from localStorage", e);
+      }
+    }
+    setIsLoaded(true);
+  }, []);
+
+  // 保存到localStorage
+  const saveTeamsToStorage = (updatedTeams: Team[]) => {
+    localStorage.setItem("teams", JSON.stringify(updatedTeams));
+    setTeams(updatedTeams);
+  };
 
   // 状态：弹窗控制
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -147,14 +214,16 @@ export default function Home() {
       members: selectedMembers as TeamMember[],
     };
 
-    setTeams([...teams, newTeam]);
+    const updatedTeams = [...teams, newTeam];
+    saveTeamsToStorage(updatedTeams);
     setIsModalOpen(false);
   };
 
   // 删除队伍
   const handleDeleteTeam = (id: number) => {
     if (window.confirm("确定要删除这个队伍吗？")) {
-      setTeams(teams.filter(team => team.id !== id));
+      const updatedTeams = teams.filter(team => team.id !== id);
+      saveTeamsToStorage(updatedTeams);
     }
   };
 
@@ -185,15 +254,16 @@ export default function Home() {
 
   return (
     <main style={{ padding: "20px" }}>
-      <div style={{ marginBottom: "20px", textAlign: "center" }}>
+      <div style={{ marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h2>矩阵叠兵</h2>
+        <div style={{ fontSize: "18px", color: "var(--text-gold)", fontWeight: "bold" }}>
+          总分: {teams.reduce((sum, team) => sum + parseInt(team.score || "0"), 0)}
+        </div>
       </div>
 
       <div id="team-list" className="space-y-4">
         {teams.map((team) => (
-          <div key={team.id} className="flex items-center w-full gap-4">
-            <TeamCard team={team} />
-          </div>
+          <TeamCard key={team.id} team={team} onDelete={handleDeleteTeam} />
         ))}
       </div>
 
@@ -209,7 +279,7 @@ export default function Home() {
             <div className="modal" style={{ position: 'relative', overflow: 'hidden' }}>
               <h3>添加新记录</h3>
               <div className="form-group">
-                <label className="form-label">深塔分数</label>
+                <label className="form-label">矩阵分数</label>
                 <input
                   type="number"
                   className="form-input"

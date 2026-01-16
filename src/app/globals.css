@@ -28,6 +28,15 @@ body {
   padding-bottom: 80px; /* Space for FAB */
 }
 
+/* 卡片项目包装器 */
+.team-item-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+}
+
 /* 列表卡片 */
 .team-card {
   display: flex;
@@ -38,6 +47,38 @@ body {
   border-radius: 4px;
   padding: 10px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  width: 100%;
+  will-change: transform;
+}
+
+/* 删除按钮 */
+.delete-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 80px;
+  background: #d32f2f;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.15s ease-out;
+}
+
+.delete-btn:hover {
+  background: #b71c1c;
+}
+
+.delete-btn:active {
+  background: #9a0007;
 }
 
 .team-info {
