@@ -1,8 +1,7 @@
 /* src/app/page.tsx */
 "use client";
 
-import { useState, useEffect } from "react";
-import { Trash2 } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 
 // --- Types ---
 type Character = {
@@ -73,39 +72,45 @@ const CHARACTERS: Character[] = [
 ];
 
 const CHAIN_MAP = ["零链", "一链", "二链", "三链", "四链", "五链", "六链"];
-const CHINESE_NUM = ["", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];
 
 // --- Components ---
 
 // 1. 卡片组件
-function TeamCard({ team, onDelete }: { team: Team; onDelete: (id: number) => void; }) {
+function TeamCard({ team, onDelete, onEdit }: { team: Team; onDelete: (id: number) => void; onEdit: (id: number) => void; }) {
   const [isSliding, setIsSliding] = useState(false);
-  const [startX, setStartX] = useState(0);
+  const startXRef = useRef(0);
   const [currentX, setCurrentX] = useState(0);
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setStartX(e.touches[0].clientX);
+  const MAX_SLIDE_WIDTH = 150;
+
+  const handleTouchStart = (e) => {
+    // 记录初始触摸点和当前的偏移量（以防第二次拖拽）
+    startXRef.current = e.touches[0].clientX - currentX;
+    setIsSliding(true);
   };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    const moveX = e.touches[0].clientX - startX;
-    if (moveX < 0) {
-      setCurrentX(Math.max(moveX, -80));
-      setIsSliding(false);
-    } else if (moveX > 0) {
-      // 向右移动时恢复
-      setCurrentX(0);
-      setIsSliding(false);
-    }
+  const handleTouchMove = (e) => {
+    e.preventDefault(); // 防止页面上下滚动干扰
+    const touchX = e.touches[0].clientX;
+    const deltaX = touchX - startXRef.current;
+
+    // 限制滑动范围：
+    // Math.min(0, ...) 确保不能向右滑动超过初始位置（出现空白）
+    // Math.max(-MAX_SLIDE_WIDTH, ...) 确保不能向左滑动超过按钮宽度
+    const newX = Math.min(0, Math.max(deltaX, -MAX_SLIDE_WIDTH));
+
+    setCurrentX(newX);
   };
 
   const handleTouchEnd = () => {
-    if (currentX < -40) {
-      setIsSliding(true);
-      setCurrentX(-80);
+    setIsSliding(false);
+
+    // 自动吸附逻辑：
+    // 如果滑动超过一半宽度，就完全展开；否则弹回
+    if (currentX < -(MAX_SLIDE_WIDTH / 2)) {
+      setCurrentX(-MAX_SLIDE_WIDTH); // 展开状态
     } else {
-      setCurrentX(0);
-      setIsSliding(false);
+      setCurrentX(0); // 收起状态
     }
   };
 
@@ -113,13 +118,11 @@ function TeamCard({ team, onDelete }: { team: Team; onDelete: (id: number) => vo
     onDelete(team.id);
   };
 
-  // 计算删除按钮的透明度：根据滑动距离
-  const deleteOpacity = Math.abs(currentX) / 80;
 
   return (
     <div className="team-item-wrapper">
       <div
-        className="team-card flex-grow"
+        className={`team-card flex-grow ${isSliding ? 'sliding' : ''}`}
         style={{
           transform: `translateX(${currentX}px)`,
           transition: isSliding ? 'none' : 'transform 0.3s ease-out',
@@ -143,17 +146,11 @@ function TeamCard({ team, onDelete }: { team: Team; onDelete: (id: number) => vo
             </div>
           ))}
         </div>
+        <div className="card-actions">
+          <button className="action-btn edit-btn" onClick={() => onEdit(team.id)}>编辑</button>
+          <button className="action-btn delete-btn" onClick={handleDelete}>删除</button>
+        </div>
       </div>
-      <button
-        className="delete-btn"
-        style={{
-          opacity: deleteOpacity,
-          pointerEvents: deleteOpacity > 0.5 ? 'auto' : 'none',
-        }}
-        onClick={handleDelete}
-      >
-        删除
-      </button>
     </div>
   );
 }
@@ -188,34 +185,42 @@ export default function Home() {
   const [isCharListOpen, setIsCharListOpen] = useState(false);
 
   // 状态：正在编辑的新队伍数据
+  const [editingTeamId, setEditingTeamId] = useState<number | null>(null);
   const [score, setScore] = useState("");
   const [selectedMembers, setSelectedMembers] = useState<(TeamMember | null)[]>([null, null, null]);
   const [currentSlotIndex, setCurrentSlotIndex] = useState<number | null>(null);
 
   // 打开主弹窗
   const handleOpenModal = () => {
+    setEditingTeamId(null);
     setScore("");
     setSelectedMembers([null, null, null]);
     setIsModalOpen(true);
   };
 
-  // 保存队伍
+  // 保存队伍（支持新增与编辑）
   const handleSave = () => {
     if (!score) return alert("请填写分数");
     if (selectedMembers.some((m) => m === null)) return alert("请完整选择3个角色");
 
-    const newTeamCount = teams.length + 1;
-    const teamName = `队伍${CHINESE_NUM[newTeamCount] || newTeamCount}`;
+    const members = selectedMembers as TeamMember[];
 
-    const newTeam: Team = {
-      id: Date.now(),
-      name: teamName,
-      score,
-      members: selectedMembers as TeamMember[],
-    };
+    if (editingTeamId === null) {
+      const newTeamCount = teams.length + 1;
+      const nameToUse = `队伍${newTeamCount}`;
+      const newTeam: Team = {
+        id: Date.now(),
+        name: nameToUse,
+        score,
+        members,
+      };
+      const updatedTeams = [...teams, newTeam];
+      saveTeamsToStorage(updatedTeams);
+    } else {
+      const updatedTeams = teams.map(t => t.id === editingTeamId ? { ...t, score, members } : t);
+      saveTeamsToStorage(updatedTeams);
+    }
 
-    const updatedTeams = [...teams, newTeam];
-    saveTeamsToStorage(updatedTeams);
     setIsModalOpen(false);
   };
 
@@ -225,6 +230,22 @@ export default function Home() {
       const updatedTeams = teams.filter(team => team.id !== id);
       saveTeamsToStorage(updatedTeams);
     }
+  };
+
+  // 编辑队伍：在模态中回显并打开编辑模式
+  const handleEditTeam = (id: number) => {
+    const team = teams.find(t => t.id === id);
+    if (!team) return;
+
+    setEditingTeamId(id);
+    setScore(team.score);
+    // 保证长度为3
+    const members: (TeamMember | null)[] = [null, null, null];
+    for (let i = 0; i < Math.min(3, team.members.length); i++) {
+      members[i] = team.members[i];
+    }
+    setSelectedMembers(members);
+    setIsModalOpen(true);
   };
 
   // 打开角色选择
@@ -255,15 +276,15 @@ export default function Home() {
   return (
     <main style={{ padding: "20px" }}>
       <div style={{ marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <h2>矩阵叠兵</h2>
+        <img src="./pic/logo.png" alt="矩阵叠兵" style={{ height: "40px" }} />
         <div style={{ fontSize: "18px", color: "var(--text-gold)", fontWeight: "bold" }}>
-          总分: {teams.reduce((sum, team) => sum + parseInt(team.score || "0"), 0)}
+          总积分: {teams.reduce((sum, team) => sum + parseInt(team.score || "0"), 0)}
         </div>
       </div>
 
       <div id="team-list" className="space-y-4">
         {teams.map((team) => (
-          <TeamCard key={team.id} team={team} onDelete={handleDeleteTeam} />
+          <TeamCard key={team.id} team={team} onDelete={handleDeleteTeam} onEdit={handleEditTeam} />
         ))}
       </div>
 
@@ -277,7 +298,7 @@ export default function Home() {
         isModalOpen && (
           <div className="modal-overlay" id="addModal" onClick={(e) => e.target === e.currentTarget && setIsModalOpen(false)}>
             <div className="modal" style={{ position: 'relative', overflow: 'hidden' }}>
-              <h3>添加新记录</h3>
+              <h3>{editingTeamId === null ? '添加新记录' : '编辑记录'}</h3>
               <div className="form-group">
                 <label className="form-label">矩阵分数</label>
                 <input
@@ -332,7 +353,7 @@ export default function Home() {
 
               <div className="modal-actions">
                 <button className="btn btn-cancel" onClick={() => setIsModalOpen(false)}>取消</button>
-                <button className="btn btn-confirm" onClick={handleSave}>保存</button>
+                <button className="btn btn-confirm" onClick={handleSave}>{editingTeamId === null ? '保存' : '更新'}</button>
               </div>
 
               {/* 内部弹层：角色列表 */}
