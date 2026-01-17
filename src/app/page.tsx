@@ -54,15 +54,15 @@ const CHARACTERS: Character[] = [
   { id: 24, name: "琳奈", img: "./avatar/T_IconRoleHead256_60_UI.webp" },
   { id: 26, name: "漂泊者", img: "./avatar/T_IconRoleHead256_4_UI.webp" },
   { id: 27, name: "漂泊者", img: "./avatar/T_IconRoleHead256_5_UI.webp" },
+  { id: 37, name: "秧秧", img: "./avatar/T_IconRoleHead256_1_UI.webp" },
+  { id: 30, name: "莫特斐", img: "./avatar/T_IconRoleHead256_13_UI.webp" },
+  { id: 33, name: "散华", img: "./avatar/T_IconRoleHead256_7_UI.webp" },
   { id: 28, name: "桃祈", img: "./avatar/T_IconRoleHead256_9_UI.webp" },
   { id: 29, name: "渊武", img: "./avatar/T_IconRoleHead256_15_UI.webp" },
-  { id: 30, name: "莫特斐", img: "./avatar/T_IconRoleHead256_13_UI.webp" },
   { id: 31, name: "丹瑾", img: "./avatar/T_IconRoleHead256_10_UI.webp" },
   { id: 32, name: "秋水", img: "./avatar/T_IconRoleHead256_12_UI.webp" },
-  { id: 33, name: "散华", img: "./avatar/T_IconRoleHead256_7_UI.webp" },
   { id: 34, name: "炽霞", img: "./avatar/T_IconRoleHead256_2_UI.webp" },
   { id: 36, name: "釉瑚", img: "./avatar/T_IconRoleHead256_31_UI.webp" },
-  { id: 37, name: "秧秧", img: "./avatar/T_IconRoleHead256_1_UI.webp" },
   { id: 38, name: "灯灯", img: "./avatar/T_IconRoleHead256_30_UI.webp" },
   { id: 40, name: "鉴心", img: "./avatar/T_IconRoleHead256_23_UI.webp" },
   { id: 41, name: "卡卡罗", img: "./avatar/T_IconRoleHead256_18_UI.webp" },
@@ -304,7 +304,7 @@ export default function Home() {
                   type="number"
                   className="form-input"
                   id="scoreInput"
-                  placeholder="例如：2220"
+                  placeholder="例如：5000"
                   value={score}
                   onChange={(e) => setScore(e.target.value)}
                 />
