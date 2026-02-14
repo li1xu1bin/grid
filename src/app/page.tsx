@@ -52,6 +52,8 @@ const CHARACTERS: Character[] = [
   { id: 22, name: "仇远", img: "./avatar/T_IconRoleHead256_56_UI.webp" },
   { id: 23, name: "千咲", img: "./avatar/T_IconRoleHead256_57_UI.webp" },
   { id: 24, name: "琳奈", img: "./avatar/T_IconRoleHead256_60_UI.webp" },
+  { id: 45, name: "爱弥斯", img: "./avatar/T_IconRoleHead256_53_UI.webp" },
+  { id: 46, name: "陆赫斯", img: "./avatar/T_IconRoleHead256_54_UI.webp" },
   { id: 26, name: "漂泊者", img: "./avatar/T_IconRoleHead256_4_UI.webp" },
   { id: 27, name: "漂泊者", img: "./avatar/T_IconRoleHead256_5_UI.webp" },
   { id: 37, name: "秧秧", img: "./avatar/T_IconRoleHead256_1_UI.webp" },
